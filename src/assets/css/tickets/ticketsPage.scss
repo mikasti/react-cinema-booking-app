@@ -1,0 +1,148 @@
+@use "../common/variables" as *;
+
+.tickets-page {
+    padding: 20px;
+    color: $color-text;
+    max-width: 800px;
+    margin: 0 auto;
+    min-height: 100vh;
+
+    h1 {
+        text-align: center;
+        margin-bottom: 32px;
+        font-size: 32px;
+        font-weight: 700;
+    }
+
+    .tickets-section {
+        margin-bottom: 40px;
+
+        h2 {
+            font-size: 20px;
+            margin-bottom: 16px;
+            color: $color-label;
+            border-bottom: 1px solid $color-gray;
+            padding-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .tickets-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+
+            .empty-message {
+                color: $color-label;
+                font-size: 14px;
+                text-align: center;
+                padding: 20px;
+                opacity: 0.7;
+            }
+        }
+
+        .ticket-card {
+            background-color: rgba(255, 255, 255, 0.03);
+            border: 1px solid $color-gray;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-radius: 12px;
+            transition: border-color 0.2s;
+
+            &:hover {
+                border-color: rgba(255, 255, 255, 0.3);
+            }
+
+            &.past {
+                opacity: 0.5;
+                background-color: transparent;
+            }
+
+            .ticket-info {
+                h3 {
+                    margin: 0 0 4px 0;
+                    font-size: 18px;
+                    font-weight: 600;
+                }
+
+                p {
+                    margin: 0 0 4px 0;
+                    color: $color-label;
+                    font-size: 14px;
+                }
+
+                .seats-info {
+                    color: $color-text;
+                    margin-top: 8px;
+                    font-weight: 500;
+                    font-size: 14px;
+                }
+            }
+
+            .ticket-actions {
+                display: flex;
+                flex-direction: column;
+                align-items: flex-end;
+                gap: 12px;
+
+                .pay-button {
+                    background: $color-accent;
+                    border: 1px solid $color-accent;
+                    color: $color-bg;
+                    padding: 8px 16px;
+                    cursor: pointer;
+                    border-radius: 6px;
+                    font-weight: 600;
+                    font-size: 14px;
+                    transition: all 0.2s;
+
+                    &:hover {
+                        background: transparent;
+                        color: $color-accent;
+                    }
+
+                    &:disabled {
+                        background: transparent;
+                        border-color: $color-gray;
+                        color: $color-label;
+                        cursor: not-allowed;
+                        opacity: 0.7;
+
+                        &:hover {
+                            background: transparent;
+                            color: $color-label;
+                        }
+                    }
+                }
+
+                .timer {
+                    font-family: monospace;
+                    font-size: 14px;
+                    color: $color-danger;
+                }
+
+                .paid-badge,
+                .past-badge {
+                    font-size: 12px;
+                    padding: 4px 8px;
+                    border-radius: 4px;
+                    font-weight: 500;
+                    text-transform: uppercase;
+                    letter-spacing: 0.5px;
+                }
+
+                .paid-badge {
+                    color: $color-text;
+                    background: rgba(255, 255, 255, 0.1);
+                    border: 1px solid rgba(255, 255, 255, 0.2);
+                }
+
+                .past-badge {
+                    color: $color-label;
+                    border: 1px solid $color-gray;
+                }
+            }
+        }
+    }
+}

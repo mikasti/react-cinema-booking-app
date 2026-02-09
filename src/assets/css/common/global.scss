@@ -1,0 +1,31 @@
+@use "variables";
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: variables.$color-bg;
+    color: variables.$color-text;
+    font-family: variables.$font-main;
+    -webkit-font-smoothing: antialiased;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+button {
+    cursor: pointer;
+    border: none;
+    background: none;
+    font-family: inherit;
+}
+
+.page-content {
+    padding: 40px;
+    flex: 1;
+}

@@ -1,0 +1,17 @@
+# Default ignored files
+/shelf/
+/workspace.xml
+# Ignored default folder with query files
+/queries/
+# Datasource local storage ignored files
+/dataSources/
+/dataSources.local.xml
+# Editor-based HTTP Client requests
+/httpRequests/
+/compiler.xml
+/jsLinters/eslint.xml
+/modules.xml
+/inspectionProfiles/Project_Default.xml
+/react-cinema-booking-app.iml
+/vcs.xml
+/watcherTasks.xml

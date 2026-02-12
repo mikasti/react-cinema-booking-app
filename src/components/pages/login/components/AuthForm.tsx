@@ -101,3 +101,5 @@ const AuthForm: FC<AuthFormProps> = memo(
 );
 
 export default AuthForm;
+
+AuthForm.displayName = "AuthForm";

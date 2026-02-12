@@ -18,3 +18,5 @@ const SeatLegend: FC = memo(() => {
 });
 
 export default SeatLegend;
+
+SeatLegend.displayName = "SeatLegend";

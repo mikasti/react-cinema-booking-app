@@ -27,3 +27,5 @@ const Seat: FC<SeatProps> = React.memo(
 );
 
 export default Seat;
+
+Seat.displayName = "Seat";

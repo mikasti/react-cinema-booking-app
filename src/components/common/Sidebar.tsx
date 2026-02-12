@@ -58,3 +58,5 @@ const Sidebar: FC<SidebarProps> = memo(({ isAuth, onLogout }) => {
 });
 
 export default Sidebar;
+
+Sidebar.displayName = "Sidebar";

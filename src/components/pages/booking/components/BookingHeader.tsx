@@ -25,3 +25,5 @@ const BookingHeader: FC<BookingHeaderProps> = memo(
 );
 
 export default BookingHeader;
+
+BookingHeader.displayName = "BookingHeader";

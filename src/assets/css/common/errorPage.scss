@@ -1,0 +1,50 @@
+@use "variables";
+
+.error-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: variables.$color-bg;
+    font-family: variables.$font-main;
+    color: variables.$color-text;
+
+    .error-content {
+        text-align: center;
+        background: variables.$color-gray;
+        padding: 2rem;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        max-width: 400px;
+        width: 100%;
+
+        h1 {
+            color: variables.$color-danger;
+            margin-bottom: 1rem;
+        }
+
+        p {
+            color: variables.$color-text;
+            margin-bottom: 2rem;
+            line-height: 1.5;
+        }
+
+        .reload-button {
+            background-color: variables.$color-danger;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 4px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: opacity 0.2s;
+            font-family: inherit;
+            font-weight: 500;
+            text-transform: uppercase;
+
+            &:hover {
+                opacity: 0.9;
+            }
+        }
+    }
+}

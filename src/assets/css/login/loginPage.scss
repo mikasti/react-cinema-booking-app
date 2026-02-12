@@ -1,0 +1,127 @@
+@use "../common/variables" as *;
+
+.login-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  color: $color-text;
+  background-color: $color-bg;
+  padding: 20px;
+
+  .login-container {
+    width: 100%;
+    max-width: 400px;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+
+    h1 {
+      font-size: 32px;
+      margin-bottom: 0;
+      text-align: center;
+      font-weight: 700;
+    }
+
+    .auth-form-fields {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      position: relative;
+
+      label {
+        font-size: 14px;
+        color: $color-label;
+        opacity: 0.8;
+      }
+
+      input {
+        background: transparent;
+        border: 1px solid $color-gray;
+        padding: 14px 16px;
+        color: $color-text;
+        font-size: 16px;
+        border-radius: 8px;
+        outline: none;
+        transition: border-color 0.2s;
+
+        &:focus {
+          border-color: $color-accent;
+        }
+
+        &.error {
+          border-color: $color-danger;
+        }
+      }
+
+      .error-message {
+        color: $color-danger;
+        font-size: 12px;
+        margin-top: 4px;
+      }
+    }
+
+    .submit-button {
+      margin-top: 8px;
+      background: $color-accent;
+      border: 1px solid $color-accent;
+      color: $color-bg;
+      padding: 14px 24px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      border-radius: 8px;
+      width: 100%;
+
+      &:hover {
+        background: transparent;
+        color: $color-accent;
+      }
+
+      &:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+    }
+
+    .toggle-auth {
+      text-align: center;
+      font-size: 14px;
+      color: $color-label;
+
+      .link-button {
+        background: none;
+        border: none;
+        color: $color-accent;
+        text-decoration: none;
+        cursor: pointer;
+        font-size: 14px;
+        padding: 0;
+        margin-left: 6px;
+        font-weight: 500;
+
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+    }
+
+    .server-error {
+      color: $color-danger;
+      text-align: center;
+      background: rgba($color-danger, 0.1);
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid rgba($color-danger, 0.2);
+    }
+  }
+}

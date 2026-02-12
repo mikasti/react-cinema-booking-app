@@ -1,0 +1,202 @@
+@use "../common/variables" as *;
+
+.booking-page {
+    padding: 40px;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    h1 {
+        font-size: 32px;
+        margin-bottom: 20px;
+    }
+
+    .session-info {
+        margin-bottom: 40px;
+        text-align: center;
+        color: #ccc;
+        font-size: 18px;
+
+        span {
+            display: block;
+            margin-bottom: 8px;
+        }
+    }
+
+    .screen {
+        width: 60%;
+        height: 60px;
+        background: linear-gradient(to bottom, #444, transparent);
+        margin-bottom: 40px;
+        border-top: 4px solid #fff;
+        border-radius: 50% 50% 0 0 / 20px 20px 0 0;
+        box-shadow: 0 20px 40px -10px rgba(255, 255, 255, 0.1);
+        position: relative;
+
+        &::after {
+            content: 'ЭКРАН';
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 14px;
+            color: #888;
+            letter-spacing: 4px;
+        }
+    }
+
+    .seats-container {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        margin-bottom: 40px;
+
+        .row {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            align-items: center;
+
+            .row-label {
+                width: 30px;
+                text-align: right;
+                margin-right: 16px;
+                color: #666;
+                font-size: 14px;
+            }
+
+            .seat {
+                width: 36px;
+                height: 36px;
+                background-color: #333;
+                border-radius: 8px;
+                cursor: pointer;
+                display: flex;
+                /* Centering text if needed */
+                justify-content: center;
+                align-items: center;
+                font-size: 12px;
+                color: #666;
+                transition: all 0.2s;
+                border: 1px solid #444;
+
+                &:hover:not(.booked):not(.selected) {
+                    background-color: #555;
+                    border-color: #666;
+                }
+
+                &.selected {
+                    background-color: #fff;
+                    color: #000;
+                    border-color: #fff;
+                    box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+                }
+
+                &.booked {
+                    background-color: #1a1a1a;
+                    color: #333;
+                    border-color: #222;
+                    cursor: not-allowed;
+                    opacity: 0.6;
+                }
+            }
+        }
+    }
+
+    .legend {
+        display: flex;
+        gap: 32px;
+        margin-bottom: 40px;
+
+        .item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+
+            .box {
+                width: 20px;
+                height: 20px;
+                border-radius: 4px;
+            }
+
+            &.available .box {
+                background-color: #333;
+                border: 1px solid #444;
+            }
+
+            &.selected .box {
+                background-color: #fff;
+                border: 1px solid #fff;
+            }
+
+            &.booked .box {
+                background-color: #1a1a1a;
+                border: 1px solid #222;
+            }
+        }
+    }
+
+    .booking-actions {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 16px;
+
+        .selected-seats-info {
+            text-align: center;
+
+            p {
+                margin-bottom: 8px;
+            }
+
+            .seats-list {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 8px;
+                justify-content: center;
+                max-width: 400px;
+
+                span {
+                    background: #333;
+                    padding: 4px 8px;
+                    border-radius: 4px;
+                    font-size: 14px;
+                    color: #fff;
+                    border: 1px solid #444;
+                }
+            }
+        }
+
+        p {
+            font-size: 16px;
+            color: #ccc;
+        }
+
+        button {
+            background: transparent;
+            border: 1px solid #fff;
+            color: #fff;
+            padding: 12px 40px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: 0.2s;
+            border-radius: 4px;
+
+            &:hover:not(:disabled) {
+                background: #fff;
+                color: #000;
+            }
+
+            &:disabled {
+                opacity: 0.5;
+                cursor: not-allowed;
+            }
+        }
+
+        .auth-warning {
+            margin-top: 10px;
+            color: #d32f2f;
+        }
+    }
+}

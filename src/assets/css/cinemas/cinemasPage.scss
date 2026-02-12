@@ -1,0 +1,91 @@
+@use "../common/variables" as *;
+
+.cinemas-section {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #1a1a1a;
+    color: #fff;
+
+    h1 {
+        margin-bottom: 20px;
+        font-size: 32px;
+        text-align: center;
+    }
+
+    .cinemas-grid {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        justify-content: center;
+        max-width: 1200px;
+        width: 100%;
+    }
+
+    .cinema-card {
+        background-color: #2c2c2c;
+        border-radius: 12px;
+        overflow: hidden;
+        width: 300px;
+        text-decoration: none;
+        color: inherit;
+        transition: transform 0.2s, box-shadow 0.2s;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 30px;
+        min-height: 250px;
+        border: 1px solid #333;
+
+        &:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            background-color: #333;
+        }
+
+        .cinema-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+        }
+
+        .cinema-info {
+            text-align: center;
+
+            .title {
+                margin: 0 0 8px 0;
+                font-size: 20px;
+                font-weight: 600;
+            }
+
+            .subtitle {
+                margin: 0 0 20px 0;
+                color: #aaa;
+                font-size: 14px;
+                line-height: 1.4;
+            }
+        }
+
+        .action-button {
+            background-color: transparent;
+            border: 1px solid #fff;
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: all 0.2s;
+
+            &:hover {
+                background-color: #fff;
+                color: #000;
+            }
+        }
+
+        &:hover .action-button {
+            background-color: #fff;
+            color: #000;
+        }
+    }
+}

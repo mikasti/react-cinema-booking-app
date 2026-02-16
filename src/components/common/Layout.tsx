@@ -10,8 +10,8 @@ export const Layout = () => {
   const navigate = useNavigate();
 
   const handleLogout = useCallback(() => {
-    logout();
     navigate("/movies");
+    logout();
   }, [logout, navigate]);
 
   return (

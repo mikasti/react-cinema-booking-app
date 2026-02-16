@@ -40,7 +40,7 @@ export const cinemaApi = {
     makeRequest<SessionDetails>(`/movieSessions/${movieSessionId}`),
 
   bookSession: (movieSessionId: string, data: BookingRequest) =>
-    makeRequest<IBookingResponse>(`/movieSessions/${movieSessionId}`, {
+    makeRequest<IBookingResponse>(`/movieSessions/${movieSessionId}/bookings`, {
       method: "POST",
       body: JSON.stringify(data),
     }),

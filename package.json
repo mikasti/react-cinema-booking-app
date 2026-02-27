@@ -3,8 +3,7 @@
   "version": "1.0.0",
   "description": "React cinema booking app using a bunch of tech stuff inside",
   "scripts": {
-    "start": "webpack-dev-server",
-    "msw": "cross-env REACT_APP_USE_MOCK=true REACT_APP_API_URL=http://localhost:3000 webpack-dev-server",
+    "start": "cross-env REACT_APP_USE_MOCK=true REACT_APP_API_URL=http://localhost:3000 webpack-dev-server",
     "build": "NODE_ENV='production' webpack",
     "test": "jest",
     "lint": "eslint ."
@@ -29,6 +28,7 @@
     "@types/react": "19.2.2",
     "@types/react-dom": "19.2.2",
     "babel-loader": "10.0.0",
+    "cross-env": "^10.1.0",
     "css-loader": "7.1.2",
     "eslint": "^9.39.2",
     "eslint-plugin-react": "^7.37.5",

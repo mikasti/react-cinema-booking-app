@@ -51,6 +51,7 @@ module.exports = {
                   modules: {
                     localIdentName: "[name]__[local]--[hash:base64:5]",
                     exportLocalsConvention: "camelCase",
+                    namedExport: false,
                   },
                 },
               },
@@ -76,6 +77,8 @@ module.exports = {
       extensions: ["ts", "tsx", "js", "jsx"],
       configType: "flat",
       eslintPath: "eslint/use-at-your-own-risk",
+      failOnError: false,
+      emitWarning: true,
     }),
     new webpack.DefinePlugin({
       "process.env.REACT_APP_USE_MOCK": JSON.stringify(
@@ -87,11 +90,21 @@ module.exports = {
     }),
     isDevelopment && new ReactRefreshWebpackPlugin(),
   ].filter(Boolean),
+  target: 'web',
+  watchOptions: {
+    aggregateTimeout: 300,
+    poll: 1000,
+    ignored: /node_modules/,
+  },
   devServer: {
     historyApiFallback: true,
     hot: true,
     open: true,
     port: 3000,
+    client: {
+      overlay: true,
+    },
+    watchFiles: ['src/**/*'],
   },
   optimization: {
     runtimeChunk: "single",

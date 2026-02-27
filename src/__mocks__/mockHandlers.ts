@@ -3,6 +3,10 @@ import { http, HttpResponse } from "msw";
 import { IMovie, UserBooking, IMovieSession, ICinema } from "../types/AppTypes";
 import { API_BASE_URL } from "../api/apiConstants";
 
+type MockSession = IMovieSession & {
+  seats: { rows: number; seatsPerRow: number };
+};
+
 const mockMovies: IMovie[] = [
   {
     id: 1,
@@ -29,11 +33,35 @@ const mockCinemas: ICinema[] = [
   { id: 2, name: "Салют", address: "Пр. Ленина, 25" },
 ];
 
-const mockSessions: IMovieSession[] = [
-  { id: 101, movieId: 1, cinemaId: 1, startTime: "2026-07-24T15:30:00Z" },
-  { id: 102, movieId: 1, cinemaId: 2, startTime: "2026-07-24T18:30:00Z" },
-  { id: 103, movieId: 2, cinemaId: 1, startTime: "2026-07-24T20:30:00Z" },
-  { id: 104, movieId: 2, cinemaId: 2, startTime: "2026-07-25T14:00:00+03:00" },
+const mockSessions: MockSession[] = [
+  {
+    id: 101,
+    movieId: 1,
+    cinemaId: 1,
+    startTime: "2026-07-24T15:30:00Z",
+    seats: { rows: 5, seatsPerRow: 8 },
+  },
+  {
+    id: 102,
+    movieId: 1,
+    cinemaId: 2,
+    startTime: "2026-07-24T18:30:00Z",
+    seats: { rows: 5, seatsPerRow: 8 },
+  },
+  {
+    id: 103,
+    movieId: 2,
+    cinemaId: 1,
+    startTime: "2026-07-24T20:30:00Z",
+    seats: { rows: 5, seatsPerRow: 8 },
+  },
+  {
+    id: 104,
+    movieId: 2,
+    cinemaId: 2,
+    startTime: "2026-07-25T14:00:00+03:00",
+    seats: { rows: 5, seatsPerRow: 8 },
+  },
 ];
 
 const mockBookings: UserBooking[] = [
@@ -65,6 +93,56 @@ const mockBookings: UserBooking[] = [
     startTime: "2024-01-01T12:00:00Z",
   },
 ];
+
+function isValidSeat(seat: unknown): boolean {
+  if (typeof seat !== "object" || seat === null) {
+    return false;
+  }
+
+  if (
+    !Object.prototype.hasOwnProperty.call(seat, "rowNumber") ||
+    !Object.prototype.hasOwnProperty.call(seat, "seatNumber")
+  ) {
+    return false;
+  }
+
+  const { rowNumber, seatNumber } = seat as {
+    rowNumber: unknown;
+    seatNumber: unknown;
+  };
+
+  if (
+    typeof rowNumber !== "number" ||
+    typeof seatNumber !== "number" ||
+    !Number.isFinite(rowNumber) ||
+    !Number.isFinite(seatNumber)
+  ) {
+    return false;
+  }
+
+  return rowNumber > 0 && seatNumber > 0;
+}
+
+function isValidSeats(
+  seats: unknown,
+  rowsNumber: number,
+  seatsPerRow: number,
+): boolean {
+  if (!Array.isArray(seats)) {
+    return false;
+  }
+
+  if (!seats.length) {
+    return false;
+  }
+
+  return seats.every(
+    (seat) =>
+      isValidSeat(seat) &&
+      (seat as { rowNumber: number }).rowNumber <= rowsNumber &&
+      (seat as { seatNumber: number }).seatNumber <= seatsPerRow,
+  );
+}
 
 export const mockHandlers = [
   http.post(`${API_BASE_URL}/login`, async ({ request }) => {
@@ -124,37 +202,74 @@ export const mockHandlers = [
       return new HttpResponse(null, { status: 404 });
     }
 
+    const sessionBookings = mockBookings.filter(
+      (b) => b.movieSessionId === session.id,
+    );
+    const bookedSeats = sessionBookings.flatMap((b) => b.seats);
+
     return HttpResponse.json({
       id: session.id,
       movieId: session.movieId,
       cinemaId: session.cinemaId,
       startTime: session.startTime,
-      seats: {
-        rows: 5,
-        seatsPerRow: 8,
-      },
-      bookedSeats: [{ rowNumber: 1, seatNumber: 1 }],
+      seats: session.seats,
+      bookedSeats,
     });
   }),
 
   http.post(
-    `${API_BASE_URL}/movieSessions/:movieSessionId`,
+    `${API_BASE_URL}/movieSessions/:movieSessionId/bookings`,
     async ({ params, request }) => {
-      const { movieSessionId } = params;
-      const { seats } = (await request.json()) as {
-        seats: { rowNumber: number; seatNumber: number }[];
-      };
+      const authHeader = request.headers.get("Authorization");
+      if (!authHeader) {
+        return HttpResponse.json({ message: "Доступ запрещен" }, { status: 403 });
+      }
 
+      const { movieSessionId } = params;
       const sessionId = Number(movieSessionId);
       const session = mockSessions.find((s) => s.id === sessionId);
-      if (!session) return new HttpResponse(null, { status: 404 });
+
+      if (!session) {
+        return HttpResponse.json({ message: "Сеанс не найден" }, { status: 404 });
+      }
+
+      const body = (await request.json()) as {
+        seats: { rowNumber: number; seatNumber: number }[];
+      };
+      const { seats } = body;
+
+      if (!isValidSeats(seats, session.seats.rows, session.seats.seatsPerRow)) {
+        return HttpResponse.json(
+          { message: "Неверное тело запроса" },
+          { status: 400 },
+        );
+      }
+
+      const hasConflictedBooking = mockBookings.find(
+        (booking) =>
+          booking.movieSessionId === sessionId &&
+          booking.seats.some((bookedSeat) =>
+            seats.find(
+              ({ rowNumber, seatNumber }) =>
+                bookedSeat.rowNumber === rowNumber &&
+                bookedSeat.seatNumber === seatNumber,
+            ),
+          ),
+      );
+
+      if (hasConflictedBooking) {
+        return HttpResponse.json(
+          { message: "Места уже забронированы" },
+          { status: 409 },
+        );
+      }
 
       const movie = mockMovies.find((m) => m.id === session.movieId);
       const cinema = mockCinemas.find((c) => c.id === session.cinemaId);
 
       const newBooking: UserBooking = {
         id: `b${Date.now()}`,
-        userId: 1,
+        userId: 1, // Mock user ID
         movieSessionId: sessionId,
         sessionId: sessionId,
         bookedAt: new Date().toISOString(),
